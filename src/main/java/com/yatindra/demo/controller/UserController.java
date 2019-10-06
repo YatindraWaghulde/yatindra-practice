@@ -3,6 +3,7 @@ package com.yatindra.demo.controller;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -33,7 +34,7 @@ public class UserController {
 	public ResponseEntity<UserDTO> userDetail(@PathVariable Long id) throws CustomeException {
 		Optional<UserDTO> optUser = userService.getUserDetail(id); 
 		if(!optUser.isPresent()) {
-			throw new CustomeException(404,Arrays.asList("User not found with id : "+id));
+			throw new CustomeException(HttpStatus.NOT_FOUND.value(),Arrays.asList("User not found with id : "+id));
 		}
 		return new ResponseEntity<UserDTO>(optUser.get(), HttpStatus.OK);
 	}
@@ -42,21 +43,24 @@ public class UserController {
 	public ResponseEntity<List<UserDTO>> userDetails() throws CustomeException {
 		List<UserDTO> userList = userService.getUserDetails(); 
 		if(null == userList) {
-			throw new CustomeException(404,Arrays.asList("Users not found."));
+			throw new CustomeException(HttpStatus.NOT_FOUND.value(),Arrays.asList("Users not found."));
 		}
 		return new ResponseEntity<List<UserDTO>>(userList, HttpStatus.OK);
 	}
 	
 	@PutMapping(value = "/userdetails",produces = "application/json")
 	public ResponseEntity<UserDTO> update(@Valid @RequestBody UserDTO user) throws CustomeException {
+		if(!Objects.nonNull(user.getUserSeq()))
+			throw new CustomeException(HttpStatus.BAD_REQUEST.value(),Arrays.asList("User Sequense is required."));
+		
 		Optional<UserDTO> optUser = userService.getUserDetail(user.getUserSeq());
 		if(!optUser.isPresent()) {
-			throw new CustomeException(404,Arrays.asList("User not found with id :: "+user.getUserSeq()));
+			throw new CustomeException(HttpStatus.NOT_FOUND.value(),Arrays.asList("User not found with id :: "+user.getUserSeq()));
 		}
 		
-		Optional<UserDTO> userDTO = userService.updateUserDetail(user); 
+		UserDTO userDTO = userService.updateUserDetail(user); 
 		
-		return new ResponseEntity<UserDTO>(userDTO.get(), HttpStatus.NO_CONTENT);
+		return new ResponseEntity<UserDTO>(userDTO, HttpStatus.NO_CONTENT);
 	}
 	
 	@DeleteMapping(value = "/userdetails/{id}",produces = "application/json")
@@ -69,13 +73,11 @@ public class UserController {
 		throw new CustomeException(404,Arrays.asList("User not found with id :: "+id));
 	}
 	
-	@PostMapping(value = "/userdetails",produces = "application/json")
+	@PostMapping(value = "/userdetails", produces = "application/json")
 	public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO user) {
-		user = userService.createUserDetail(user); 
-		
-		return ResponseEntity
-	            .created(URI.create("/api/userdetails/" + user.getUserSeq()))
-	            .body(user);
+		user = userService.createUserDetail(user);
+
+		return ResponseEntity.created(URI.create("/api/userdetails/" + user.getUserSeq())).body(user);
 //		return new ResponseEntity<UserDTO>(user, HttpStatus.CREATED);
 	}
 	

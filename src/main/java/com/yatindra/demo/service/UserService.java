@@ -11,7 +11,7 @@ public interface UserService {
 
 	Optional<UserDTO> getUserDetail(Long id);
 
-	Optional<UserDTO> updateUserDetail(@Valid UserDTO user);
+	UserDTO updateUserDetail(@Valid UserDTO user);
 
 	void deleteUserDetail(Long id);
 

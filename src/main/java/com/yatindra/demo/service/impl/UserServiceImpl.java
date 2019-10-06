@@ -25,8 +25,8 @@ public class UserServiceImpl implements UserService{
 		return userRepository.findAll();
 	}
 
-	public Optional<UserDTO> updateUserDetail(UserDTO user) {
-		return null;
+	public UserDTO updateUserDetail(UserDTO user) {
+		return userRepository.save(user);
 	}
 
 	public void deleteUserDetail(Long id) {
