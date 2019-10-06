@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestControllerAdvice
 @Slf4j
-public class CustomerExceptionHandler extends ResponseEntityExceptionHandler{
+public class CustomeExceptionHandler extends ResponseEntityExceptionHandler{
 	
 	
 	@ExceptionHandler(CustomeException.class)
