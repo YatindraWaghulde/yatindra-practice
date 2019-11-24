@@ -2,9 +2,6 @@ package com.yatindra.demo.dto;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -14,7 +11,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "user")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,8 +18,6 @@ public class UserDTO implements Serializable {
 
 	private static final long serialVersionUID = 9067919025422558883L;
 
-	@Id
-	@GeneratedValue
 	private Long userSeq;
 
 	@NotNull(message = Constants.USER_NAME_REQUIRED)

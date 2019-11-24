@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yatindra.demo.dto.UserDTO;
 import com.yatindra.demo.repository.UserRepository;
 import com.yatindra.demo.service.UserService;
@@ -26,6 +27,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	public UserDTO updateUserDetail(UserDTO user) {
+		ObjectMapper mapper = new ObjectMapper();
 		return userRepository.save(user);
 	}
 
